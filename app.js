@@ -97,6 +97,10 @@ const observerCallback = (mutationList) => {
       resumeButtons.forEach((button) => {
         button.addEventListener("click", resumeCounting);
       });
+      const resetButtons = document.querySelectorAll(".js-reset-btn");
+      resetButtons.forEach((button) => {
+        button.addEventListener("click", resetClock);
+      });
     }
   }
 };
@@ -123,7 +127,7 @@ function createStopwatch(stopwatchName) {
   wrapper.classList.add("stopwatch", `${id}`);
   wrapper.dataset.id = id;
   const time = document.createElement("p");
-  time.classList.add("js-elapsed-time");
+  time.classList.add("elapsed-time", "js-elapsed-time");
   time.textContent = stopwatch._elapsedTime;
   const startBtn = document.createElement("button");
   startBtn.textContent = "start";
@@ -134,11 +138,15 @@ function createStopwatch(stopwatchName) {
   const resumeBtn = document.createElement("button");
   resumeBtn.textContent = "resume";
   resumeBtn.classList.add("js-resume-btn");
+  const resetBtn = document.createElement("button");
+  resetBtn.textContent = "reset";
+  resetBtn.classList.add("js-reset-btn");
 
   wrapper.appendChild(time);
   wrapper.appendChild(startBtn);
   wrapper.appendChild(stopBtn);
   wrapper.appendChild(resumeBtn);
+  wrapper.appendChild(resetBtn);
   stopwatchSection.appendChild(wrapper);
 }
 
@@ -208,6 +216,29 @@ function resumeCounting(event) {
   targetDOMObject.dataset.intervalID = setInterval(() => {
     (stopwatchElapsedTime.textContent = selectedStopwatch._elapsedTime), 1000;
   });
+}
+
+function resetClock(event) {
+  //REPEATED CODE IN START AND PAUSE --- TURN INTO SEPERATE FUNCTION
+  const targetDOMObject = event.target.parentNode;
+  const targetDOMObjectID = targetDOMObject.dataset.id;
+
+  //accessing specific object with ID and manipulating it...
+  let selectedStopwatch;
+
+  for (let i = 0; i < stopwatchArray.length; i++) {
+    if (stopwatchArray[i]._id === targetDOMObjectID) {
+      selectedStopwatch = stopwatchArray[i];
+      break;
+    }
+  }
+  //END REPEATED CODE
+
+  selectedStopwatch.reset();
+  const stopwatchElapsedTime =
+    targetDOMObject.querySelector(".js-elapsed-time");
+  stopwatchElapsedTime.textContent = selectedStopwatch._elapsedTime;
+  clearInterval(targetDOMObject.dataset.intervalID);
 }
 
 // END FUNCTIONS ------------------------------------------------------\\

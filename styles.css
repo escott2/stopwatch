@@ -1,5 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
+
 .stopwatch {
-  width: 100px;
-  height: 100px;
-  background-color: red;
+  width: 200px;
+  height: 200px;
+  background-color: black;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.elapsed-time {
+  margin: 0.5rem;
+  padding: 0;
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
 }
