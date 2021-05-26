@@ -1,9 +1,22 @@
+// START VARIABLE DECLARATION
+const addStopwatchBtn = document.querySelector(".js-add-stopwatch");
+const stopwatchWrapper = document.querySelector("main");
+const stopwatchElapsedTime = document.querySelector(".js-elapsed-time");
+const stopwatchArray = [];
+const stopwatchName = document.querySelector(".js-stopwatch-name");
+// const startButtons = document.querySelectorAll(".js-start-btn");
+const stopButtons = document.querySelectorAll(".js-stop-btn");
+
+// END VARIABLE DECLARATION
+
+// START STOPWATCH CLASS
 // ES6 Class Syntax
 
 class Stopwatch {
-  constructor(name, time) {
+  constructor(name, time, elapsedTime) {
     this.name = name;
     this._time = time;
+    this._elapsedTime = elapsedTime;
   }
 
   //maybe this can be normal property
@@ -23,13 +36,21 @@ class Stopwatch {
     this._startTime = dateNow;
   }
 
-  get elapsedTime() {
-    return this._elapsedTime;
+  get id() {
+    return this._id;
   }
 
-  set elapsedTime(elapsedTime) {
-    this._elapsedTime = elapsedTime;
+  set id(id) {
+    this._id = id;
   }
+
+  // get elapsedTime() {
+  //   return this._elapsedTime;
+  // }
+
+  // set elapsedTime(elapsedTime) {
+  //   this._elapsedTime = elapsedTime;
+  // }
 
   start() {
     this._startTime = Date.now();
@@ -57,30 +78,102 @@ class Stopwatch {
   }
 }
 
+// END STOPWATCH CLASS
+
+// EVENT LISTENERS
+function createStopwatch(stopwatchName) {
+  //create stopwatch object
+  const stopwatch = new Stopwatch(stopwatchName, 0, 0);
+  //push stopwatch object to array
+  stopwatchArray.push(stopwatch);
+  console.log(stopwatchArray[stopwatchArray.length]);
+  console.log(stopwatchArray);
+
+  //create id for object -- improve this id later
+  const id = stopwatchArray.length;
+  stopwatch.id = id;
+  console.log(stopwatchArray);
+  stopwatch._time = 100;
+  const wrapper = document.createElement("div");
+  wrapper.classList.add("stopwatch", `${id}`);
+  const time = document.createElement("p");
+  time.classList.add(".js-elapsed-time");
+  time.textContent = stopwatch._elapsedTime;
+  const startBtn = document.createElement("button");
+  const stopBtn = document.createElement("button");
+  wrapper.appendChild(time);
+  wrapper.appendChild(startBtn);
+  wrapper.appendChild(stopBtn);
+  startBtn.textContent = "start";
+  stopBtn.textContent = "stop";
+  startBtn.classList.add("js-start-btn");
+  stopBtn.classList.add("js-stop-btn");
+  stopwatchWrapper.appendChild(wrapper);
+}
+
+addStopwatchBtn.addEventListener("click", () => {
+  createStopwatch(stopwatchName.value);
+});
+
+document.addEventListener("DOMNodeInserted", () => {
+  const startButtons = document.querySelectorAll(".js-start-btn");
+  console.log(startButtons);
+  startButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      console.log("test");
+      console.log(event.target);
+
+      stopwatch.start();
+      setInterval(() => {
+        (stopwatchElapsedTime.textContent = stopwatch._elapsedTime), 1000;
+      });
+    });
+    // const startButtons = document.querySelectorAll(".js-start-btn");
+  });
+});
+
+// startButtons.forEach((button) =>
+//   button.addEventListener("click", () => {
+//     console.log("test");
+//     // console.log(event.target);
+//   })
+// );
+
+// stopButtons.addEventListener("click", (event) => {
+//   console.log(event.target);
+// }) );
+// .addEventListener("click", (event) => {
+//   console.log(event.target);
+// });
+
+// stopButtons.addEventListener("click", (event) => {
+//   console.log(event.target);
+// });
+
 //Testing
-const stopwatch = new Stopwatch("study", 0);
-console.log(stopwatch);
+// const stopwatch = new Stopwatch("study", 0);
+// console.log(stopwatch);
 
-stopwatch.start();
-// stopwatch.run();
+// stopwatch.start();
+// // stopwatch.run();
 
-const interval = setInterval(() => {
-  console.log(stopwatch._elapsedTime);
-}, 1000);
+// const interval = setInterval(() => {
+//   console.log(stopwatch._elapsedTime);
+// }, 1000);
 
-setTimeout(() => {
-  stopwatch.pause();
-}, 5000);
+// setTimeout(() => {
+//   stopwatch.pause();
+// }, 5000);
 
-setTimeout(() => {
-  stopwatch.run();
-}, 10000);
+// setTimeout(() => {
+//   stopwatch.run();
+// }, 10000);
 
-setTimeout(() => {
-  stopwatch.pause();
-}, 15000);
+// setTimeout(() => {
+//   stopwatch.pause();
+// }, 15000);
 
-setTimeout(() => {
-  stopwatch.reset();
-  clearInterval(interval);
-}, 20000);
+// setTimeout(() => {
+//   stopwatch.reset();
+//   clearInterval(interval);
+// }, 20000);
