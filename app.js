@@ -62,7 +62,7 @@ class Stopwatch {
     this._intervalId = setInterval(() => {
       this._elapsedTime = Date.now() - this._startTime;
       // this._time = this._time + 1;
-    }, 10);
+    }, 1000);
   }
 
   pause() {
@@ -89,12 +89,13 @@ function createStopwatch(stopwatchName) {
   console.log(stopwatchArray);
 
   //create id for object -- improve this id later
-  const id = stopwatchArray.length;
-  stopwatch.id = `id-${id}`;
+  const id = `id-${stopwatchArray.length}`;
+  stopwatch.id = id;
   console.log(stopwatchArray);
   stopwatch._time = 100;
   const wrapper = document.createElement("div");
-  wrapper.classList.add("stopwatch", `id-${id}`);
+  wrapper.classList.add("stopwatch", `${id}`);
+  wrapper.dataset.id = id;
   const time = document.createElement("p");
   time.classList.add("js-elapsed-time");
   time.textContent = stopwatch._elapsedTime;
@@ -114,17 +115,21 @@ addStopwatchBtn.addEventListener("click", () => {
   createStopwatch(stopwatchName.value);
 });
 
+//Add querySelectors for new components/nodes
 document.addEventListener("DOMNodeInserted", () => {
   const startButtons = document.querySelectorAll(".js-start-btn");
   startButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       console.log(event.target);
+      const targetDOMObject = event.target.parentNode;
+      const targetDOMObjectID = targetDOMObject.dataset.id;
+      console.log(targetDOMObjectID);
 
       //accessing specific object with ID and manipulating it...
       let selectedStopwatch;
 
       for (let i = 0; i < stopwatchArray.length; i++) {
-        if (stopwatchArray[i]._id === `id-${1}`) {
+        if (stopwatchArray[i]._id === targetDOMObjectID) {
           selectedStopwatch = stopwatchArray[i];
           break;
         }
@@ -133,11 +138,13 @@ document.addEventListener("DOMNodeInserted", () => {
       selectedStopwatch._time = 200;
       console.log(selectedStopwatch);
 
-      const stopwatchElapsedTime = document.querySelector(".js-elapsed-time");
+      const stopwatchElapsedTime =
+        targetDOMObject.querySelector(".js-elapsed-time");
 
       selectedStopwatch.start();
       setInterval(() => {
-        (stopwatchElapsedTime.textContent = selectedStopwatch._elapsedTime), 10;
+        (stopwatchElapsedTime.textContent = selectedStopwatch._elapsedTime),
+          1000;
       });
     });
     // const startButtons = document.querySelectorAll(".js-start-btn");
