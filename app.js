@@ -39,10 +39,53 @@ class Stopwatch {
     this._id = id;
   }
 
-  // CREATE PROPERTIES - *Computed*
-  // get hour & set hour
-  // get minute & set minute
-  // get second & set minute
+  get hour() {
+    return this._hour;
+  }
+
+  set hour(hour) {
+    this._hour = hour;
+  }
+
+  calcHour() {
+    const elapsedTime = this._elapsedTime;
+    const elapsedTimeInSeconds = Math.round(elapsedTime / 1000);
+    const elapsedTimeInMinutes = Math.floor(elapsedTimeInSeconds / 60);
+    const elapsedTimeInHours = Math.floor(elapsedTimeInMinutes / 60);
+    const hour = elapsedTimeInHours % 60;
+    this._hour = hour.toString().padStart(2, "0");
+  }
+
+  get minute() {
+    return this._minute;
+  }
+
+  set minute(minute) {
+    this._minute = minute;
+  }
+
+  calcMinute() {
+    const elapsedTime = this._elapsedTime;
+    const elapsedTimeInSeconds = Math.round(elapsedTime / 1000);
+    const elapsedTimeInMinutes = Math.floor(elapsedTimeInSeconds / 60);
+    const minute = elapsedTimeInMinutes % 60;
+    this._minute = minute.toString().padStart(2, "0");
+  }
+
+  get second() {
+    return this._second;
+  }
+
+  set second(second) {
+    this._second = second;
+  }
+
+  calcSecond() {
+    const elapsedTime = this._elapsedTime;
+    const elapsedTimeInSeconds = Math.round(elapsedTime / 1000);
+    const second = elapsedTimeInSeconds % 60;
+    this._second = second.toString().padStart(2, "0");
+  }
 
   start() {
     this._startTime = Date.now();
@@ -57,8 +100,14 @@ class Stopwatch {
 
   run(savedElapsedTime = 0) {
     // setInterval --- every 1000 ms, add 1 second to time property.
+    // this.calcHour();
+    // this.calcMinute();
+    // this.calcSecond();
     this._intervalId = setInterval(() => {
       this._elapsedTime = Date.now() - this._startTime + savedElapsedTime;
+      this.calcHour();
+      this.calcMinute();
+      this.calcSecond();
     }, 1000);
   }
 
@@ -126,23 +175,41 @@ function createStopwatch(stopwatchName) {
   const wrapper = document.createElement("div");
   wrapper.classList.add("stopwatch", `${id}`);
   wrapper.dataset.id = id;
-  const time = document.createElement("p");
-  time.classList.add("elapsed-time", "js-elapsed-time");
-  time.textContent = stopwatch._elapsedTime;
+  const timeWrapper = document.createElement("div");
+  timeWrapper.classList.add("elapsed-time-wrapper", "js-elapsed-time-wrapper");
+  const hourSpan = document.createElement("span");
+  hourSpan.classList.add("js-hour-place", "time-span");
+  hourSpan.textContent = "00";
+  const firstColon = document.createElement("p");
+  firstColon.textContent = ":";
+  const secondColon = document.createElement("p");
+  secondColon.textContent = ":";
+  const minuteSpan = document.createElement("span");
+  minuteSpan.classList.add("js-minute-place", "time-span");
+  minuteSpan.textContent = "00";
+  const secondSpan = document.createElement("span");
+  secondSpan.classList.add("js-second-place", "time-span");
+  secondSpan.textContent = "00";
+  timeWrapper.appendChild(hourSpan);
+  timeWrapper.appendChild(firstColon);
+  timeWrapper.appendChild(minuteSpan);
+  timeWrapper.appendChild(secondColon);
+  timeWrapper.appendChild(secondSpan);
+
   const startBtn = document.createElement("button");
   startBtn.textContent = "start";
-  startBtn.classList.add("js-start-btn");
+  startBtn.classList.add("js-start-btn", "stopwatch-btn");
   const stopBtn = document.createElement("button");
   stopBtn.textContent = "pause";
-  stopBtn.classList.add("js-pause-btn");
+  stopBtn.classList.add("js-pause-btn", "stopwatch-btn", "display-none");
   const resumeBtn = document.createElement("button");
   resumeBtn.textContent = "resume";
-  resumeBtn.classList.add("js-resume-btn");
+  resumeBtn.classList.add("js-resume-btn", "stopwatch-btn", "display-none");
   const resetBtn = document.createElement("button");
   resetBtn.textContent = "reset";
-  resetBtn.classList.add("js-reset-btn");
+  resetBtn.classList.add("js-reset-btn", "stopwatch-btn", "display-none");
 
-  wrapper.appendChild(time);
+  wrapper.appendChild(timeWrapper);
   wrapper.appendChild(startBtn);
   wrapper.appendChild(stopBtn);
   wrapper.appendChild(resumeBtn);
@@ -153,6 +220,14 @@ function createStopwatch(stopwatchName) {
 function startCounting(event) {
   const targetDOMObject = event.target.parentNode;
   const targetDOMObjectID = targetDOMObject.dataset.id;
+  const startBtn = targetDOMObject.querySelector(".js-start-btn");
+  const pauseBtn = targetDOMObject.querySelector(".js-pause-btn");
+  // const resumeBtn = targetDOMObject.querySelector(".js-resume-btn");
+  const resetBtn = targetDOMObject.querySelector(".js-reset-btn");
+  startBtn.classList.add("display-none");
+  pauseBtn.classList.remove("display-none");
+  // resumeBtn.classList.remove("display-none");
+  resetBtn.classList.remove("display-none");
   //accessing specific object with ID and manipulating it...
   let selectedStopwatch;
 
@@ -163,20 +238,33 @@ function startCounting(event) {
     }
   }
 
-  const stopwatchElapsedTime =
-    targetDOMObject.querySelector(".js-elapsed-time");
-
   selectedStopwatch.start();
+
+  const hourPlace = targetDOMObject.querySelector(".js-hour-place");
+  const minutePlace = targetDOMObject.querySelector(".js-minute-place");
+  const secondPlace = targetDOMObject.querySelector(".js-second-place");
+
   //save interval id, so it can be cleared later
   targetDOMObject.dataset.intervalID = setInterval(() => {
-    (stopwatchElapsedTime.textContent = selectedStopwatch._elapsedTime), 1000;
-  });
+    hourPlace.textContent = selectedStopwatch._hour;
+    minutePlace.textContent = selectedStopwatch._minute;
+    secondPlace.textContent = selectedStopwatch._second;
+  }, 1000);
 }
 
 function pauseCounting(event) {
   //REPEATED CODE IN START AND PAUSE --- TURN INTO SEPERATE FUNCTION
   const targetDOMObject = event.target.parentNode;
   const targetDOMObjectID = targetDOMObject.dataset.id;
+  // const startBtn = targetDOMObject.querySelector(".js-start-btn");
+  const pauseBtn = targetDOMObject.querySelector(".js-pause-btn");
+  const resumeBtn = targetDOMObject.querySelector(".js-resume-btn");
+  // const resetBtn = targetDOMObject.querySelector(".js-reset-btn");
+  // startBtn.classList.add("display-none");
+  pauseBtn.classList.add("display-none");
+  resumeBtn.classList.remove("display-none");
+  // resumeBtn.classList.remove("display-none");
+  // resetBtn.classList.remove("display-none");
 
   //accessing specific object with ID and manipulating it...
   let selectedStopwatch;
@@ -197,6 +285,15 @@ function resumeCounting(event) {
   //REPEATED CODE IN START AND PAUSE --- TURN INTO SEPERATE FUNCTION
   const targetDOMObject = event.target.parentNode;
   const targetDOMObjectID = targetDOMObject.dataset.id;
+  // const startBtn = targetDOMObject.querySelector(".js-start-btn");
+  const pauseBtn = targetDOMObject.querySelector(".js-pause-btn");
+  const resumeBtn = targetDOMObject.querySelector(".js-resume-btn");
+  // const resetBtn = targetDOMObject.querySelector(".js-reset-btn");
+  // startBtn.classList.add("display-none");
+  pauseBtn.classList.remove("display-none");
+  resumeBtn.classList.add("display-none");
+  // resumeBtn.classList.remove("display-none");
+  // resetBtn.classList.remove("display-none");
 
   //accessing specific object with ID and manipulating it...
   let selectedStopwatch;
@@ -211,17 +308,31 @@ function resumeCounting(event) {
 
   selectedStopwatch.resume();
   //REPEATED IN startCounting();
-  const stopwatchElapsedTime =
-    targetDOMObject.querySelector(".js-elapsed-time");
+
+  const hourPlace = targetDOMObject.querySelector(".js-hour-place");
+  const minutePlace = targetDOMObject.querySelector(".js-minute-place");
+  const secondPlace = targetDOMObject.querySelector(".js-second-place");
+
+  //save interval id, so it can be cleared later
   targetDOMObject.dataset.intervalID = setInterval(() => {
-    (stopwatchElapsedTime.textContent = selectedStopwatch._elapsedTime), 1000;
-  });
+    hourPlace.textContent = selectedStopwatch._hour;
+    minutePlace.textContent = selectedStopwatch._minute;
+    secondPlace.textContent = selectedStopwatch._second;
+  }, 1000);
 }
 
 function resetClock(event) {
   //REPEATED CODE IN START AND PAUSE --- TURN INTO SEPERATE FUNCTION
   const targetDOMObject = event.target.parentNode;
   const targetDOMObjectID = targetDOMObject.dataset.id;
+  const startBtn = targetDOMObject.querySelector(".js-start-btn");
+  const pauseBtn = targetDOMObject.querySelector(".js-pause-btn");
+  const resumeBtn = targetDOMObject.querySelector(".js-resume-btn");
+  const resetBtn = targetDOMObject.querySelector(".js-reset-btn");
+  startBtn.classList.remove("display-none");
+  pauseBtn.classList.add("display-none");
+  resumeBtn.classList.add("display-none");
+  resetBtn.classList.add("display-none");
 
   //accessing specific object with ID and manipulating it...
   let selectedStopwatch;
@@ -235,9 +346,16 @@ function resetClock(event) {
   //END REPEATED CODE
 
   selectedStopwatch.reset();
-  const stopwatchElapsedTime =
-    targetDOMObject.querySelector(".js-elapsed-time");
-  stopwatchElapsedTime.textContent = selectedStopwatch._elapsedTime;
+
+  const hourPlace = targetDOMObject.querySelector(".js-hour-place");
+  const minutePlace = targetDOMObject.querySelector(".js-minute-place");
+  const secondPlace = targetDOMObject.querySelector(".js-second-place");
+
+  //Probably better to access object property values
+  hourPlace.textContent = "00";
+  minutePlace.textContent = "00";
+  secondPlace.textContent = "00";
+
   clearInterval(targetDOMObject.dataset.intervalID);
 }
 
