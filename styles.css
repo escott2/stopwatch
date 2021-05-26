@@ -1,22 +1,45 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
 
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.display-none {
+  display: none;
+}
+
 .stopwatch {
-  width: 200px;
-  height: 200px;
   background-color: black;
-  margin: 0 auto;
+  width: 250px;
+  height: 250px;
+  margin: 1rem auto;
   display: flex;
+  /* flex-wrap: wrap; */
   flex-direction: column;
   align-items: center;
 }
 
-.elapsed-time {
+.elapsed-time-wrapper {
   width: 90%;
   margin: 0.5rem;
-  padding: 0;
   color: white;
   font-size: 2rem;
   text-align: center;
   font-family: "Poppins", sans-serif;
   font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.time-span {
+  width: 50px;
+}
+
+.stopwatch-btn {
+  margin: 0.25rem;
+  padding: 0.25rem;
+  width: 50%;
 }
