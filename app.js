@@ -1,7 +1,7 @@
 // START VARIABLE DECLARATION
 const addStopwatchBtn = document.querySelector(".js-add-stopwatch");
 const stopwatchWrapper = document.querySelector("main");
-const stopwatchElapsedTime = document.querySelector(".js-elapsed-time");
+// const stopwatchElapsedTime = document.querySelector(".js-elapsed-time");
 const stopwatchArray = [];
 const stopwatchName = document.querySelector(".js-stopwatch-name");
 // const startButtons = document.querySelectorAll(".js-start-btn");
@@ -62,7 +62,7 @@ class Stopwatch {
     this._intervalId = setInterval(() => {
       this._elapsedTime = Date.now() - this._startTime;
       // this._time = this._time + 1;
-    }, 1000);
+    }, 10);
   }
 
   pause() {
@@ -86,18 +86,17 @@ function createStopwatch(stopwatchName) {
   const stopwatch = new Stopwatch(stopwatchName, 0, 0);
   //push stopwatch object to array
   stopwatchArray.push(stopwatch);
-  console.log(stopwatchArray[stopwatchArray.length]);
   console.log(stopwatchArray);
 
   //create id for object -- improve this id later
   const id = stopwatchArray.length;
-  stopwatch.id = id;
+  stopwatch.id = `id-${id}`;
   console.log(stopwatchArray);
   stopwatch._time = 100;
   const wrapper = document.createElement("div");
-  wrapper.classList.add("stopwatch", `${id}`);
+  wrapper.classList.add("stopwatch", `id-${id}`);
   const time = document.createElement("p");
-  time.classList.add(".js-elapsed-time");
+  time.classList.add("js-elapsed-time");
   time.textContent = stopwatch._elapsedTime;
   const startBtn = document.createElement("button");
   const stopBtn = document.createElement("button");
@@ -117,20 +116,43 @@ addStopwatchBtn.addEventListener("click", () => {
 
 document.addEventListener("DOMNodeInserted", () => {
   const startButtons = document.querySelectorAll(".js-start-btn");
-  console.log(startButtons);
   startButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
-      console.log("test");
       console.log(event.target);
 
-      stopwatch.start();
+      //accessing specific object with ID and manipulating it...
+      let selectedStopwatch;
+
+      for (let i = 0; i < stopwatchArray.length; i++) {
+        if (stopwatchArray[i]._id === `id-${1}`) {
+          selectedStopwatch = stopwatchArray[i];
+          break;
+        }
+      }
+
+      selectedStopwatch._time = 200;
+      console.log(selectedStopwatch);
+
+      const stopwatchElapsedTime = document.querySelector(".js-elapsed-time");
+
+      selectedStopwatch.start();
       setInterval(() => {
-        (stopwatchElapsedTime.textContent = stopwatch._elapsedTime), 1000;
+        (stopwatchElapsedTime.textContent = selectedStopwatch._elapsedTime), 10;
       });
     });
     // const startButtons = document.querySelectorAll(".js-start-btn");
   });
 });
+
+// let selectedStopwatch;
+
+// for (let i = 0; i < stopwatchArray.length; i++) {
+//   if (stopwatchArray[i].id === 2) {
+//     selectedStopwatch = stopwatchArray[i];
+//     break;
+//   }
+//   selectedStopwatch._time = 200;
+// }
 
 // startButtons.forEach((button) =>
 //   button.addEventListener("click", () => {
