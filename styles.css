@@ -11,6 +11,7 @@
 }
 
 .elapsed-time {
+  width: 90%;
   margin: 0.5rem;
   padding: 0;
   color: white;

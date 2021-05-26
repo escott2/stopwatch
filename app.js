@@ -39,10 +39,53 @@ class Stopwatch {
     this._id = id;
   }
 
-  // CREATE PROPERTIES - *Computed*
-  // get hour & set hour
-  // get minute & set minute
-  // get second & set minute
+  get hour() {
+    return this._hour;
+  }
+
+  set hour(hour) {
+    this._hour = hour;
+  }
+
+  calcHour() {
+    const elapsedTime = this._elapsedTime;
+    const elapsedTimeInSeconds = Math.round(elapsedTime / 1000);
+    const elapsedTimeInMinutes = Math.floor(elapsedTimeInSeconds / 60);
+    const elapsedTimeInHours = Math.floor(elapsedTimeInMinutes / 60);
+    const hour = elapsedTimeInHours % 60;
+    this._hour = hour.toString().padStart(2, "0");
+  }
+
+  get minute() {
+    return this._minute;
+  }
+
+  set minute(minute) {
+    this._minute = minute;
+  }
+
+  calcMinute() {
+    const elapsedTime = this._elapsedTime;
+    const elapsedTimeInSeconds = Math.round(elapsedTime / 1000);
+    const elapsedTimeInMinutes = Math.floor(elapsedTimeInSeconds / 60);
+    const minute = elapsedTimeInMinutes % 60;
+    this._minute = minute.toString().padStart(2, "0");
+  }
+
+  get second() {
+    return this._second;
+  }
+
+  set second(second) {
+    this._second = second;
+  }
+
+  calcSecond() {
+    const elapsedTime = this._elapsedTime;
+    const elapsedTimeInSeconds = Math.round(elapsedTime / 1000);
+    const second = elapsedTimeInSeconds % 60;
+    this._second = second.toString().padStart(2, "0");
+  }
 
   start() {
     this._startTime = Date.now();
@@ -57,8 +100,14 @@ class Stopwatch {
 
   run(savedElapsedTime = 0) {
     // setInterval --- every 1000 ms, add 1 second to time property.
+    // this.calcHour();
+    // this.calcMinute();
+    // this.calcSecond();
     this._intervalId = setInterval(() => {
       this._elapsedTime = Date.now() - this._startTime + savedElapsedTime;
+      this.calcHour();
+      this.calcMinute();
+      this.calcSecond();
     }, 1000);
   }
 
@@ -169,8 +218,12 @@ function startCounting(event) {
   selectedStopwatch.start();
   //save interval id, so it can be cleared later
   targetDOMObject.dataset.intervalID = setInterval(() => {
-    (stopwatchElapsedTime.textContent = selectedStopwatch._elapsedTime), 1000;
+    (stopwatchElapsedTime.textContent = `${selectedStopwatch._hour} : ${selectedStopwatch._minute} : ${selectedStopwatch._second}`),
+      1000;
   });
+  // targetDOMObject.dataset.intervalID = setInterval(() => {
+  //   (stopwatchElapsedTime.textContent = selectedStopwatch._elapsedTime), 1000;
+  // });
 }
 
 function pauseCounting(event) {
