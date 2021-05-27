@@ -6,7 +6,9 @@ const stopwatchName = document.querySelector(".js-stopwatch-name");
 // END VARIABLE DECLARATION ----------------------------------------\\
 
 // START STOPWATCH CLASS ----------------------------------------//
-// ES6 Class Syntax
+/**
+ * Creates Stopwatch object using ES6 Class Syntax
+ */
 
 class Stopwatch {
   constructor(name, elapsedTime) {
@@ -14,7 +16,6 @@ class Stopwatch {
     this._elapsedTime = elapsedTime;
   }
 
-  //maybe this can be normal property
   get intervalId() {
     return this._intervalId;
   }
@@ -47,15 +48,6 @@ class Stopwatch {
     this._hour = hour;
   }
 
-  calcHour() {
-    const elapsedTime = this._elapsedTime;
-    const elapsedTimeInSeconds = Math.round(elapsedTime / 1000);
-    const elapsedTimeInMinutes = Math.floor(elapsedTimeInSeconds / 60);
-    const elapsedTimeInHours = Math.floor(elapsedTimeInMinutes / 60);
-    const hour = elapsedTimeInHours % 60;
-    this._hour = hour.toString().padStart(2, "0");
-  }
-
   get minute() {
     return this._minute;
   }
@@ -64,20 +56,29 @@ class Stopwatch {
     this._minute = minute;
   }
 
-  calcMinute() {
-    const elapsedTime = this._elapsedTime;
-    const elapsedTimeInSeconds = Math.round(elapsedTime / 1000);
-    const elapsedTimeInMinutes = Math.floor(elapsedTimeInSeconds / 60);
-    const minute = elapsedTimeInMinutes % 60;
-    this._minute = minute.toString().padStart(2, "0");
-  }
-
   get second() {
     return this._second;
   }
 
   set second(second) {
     this._second = second;
+  }
+
+  // ****** Class Methods *******
+
+  calcHour() {
+    const elapsedTime = this._elapsedTime;
+    const elapsedTimeInHours = this._elapsedTime / 3600000;
+    const hour = Math.floor(elapsedTimeInHours);
+    this._hour = hour.toString().padStart(2, "0");
+  }
+
+  calcMinute() {
+    const elapsedTime = this._elapsedTime;
+    const elapsedTimeInSeconds = Math.round(elapsedTime / 1000);
+    const elapsedTimeInMinutes = Math.floor(elapsedTimeInSeconds / 60);
+    const minute = elapsedTimeInMinutes % 60;
+    this._minute = minute.toString().padStart(2, "0");
   }
 
   calcSecond() {
@@ -100,9 +101,6 @@ class Stopwatch {
 
   run(savedElapsedTime = 0) {
     // setInterval --- every 1000 ms, add 1 second to time property.
-    // this.calcHour();
-    // this.calcMinute();
-    // this.calcSecond();
     this._intervalId = setInterval(() => {
       this._elapsedTime = Date.now() - this._startTime + savedElapsedTime;
       this.calcHour();
@@ -120,15 +118,16 @@ class Stopwatch {
     //clear time --- clearInterval()
     clearInterval(this._intervalId);
     this._elapsedTime = 0;
-    // this._time = 0;
   }
 }
 
 // END STOPWATCH CLASS --------------------------------------------\\
 
-// START FUNCTIONS ------------------------------------------------------//
-
 // Start Mutation Observer --------------------------------------------//
+/**
+ * Observes changes in DOM, queries children, and adds event listeners.
+ */
+
 const config = { childList: true };
 
 const observerCallback = (mutationList) => {
@@ -172,24 +171,30 @@ const observer = new MutationObserver(observerCallback);
 observer.observe(stopwatchSection, config);
 // End Mutation Observer --------------------------------------------//
 
-function createStopwatch(stopwatchName) {
-  //create stopwatch object
-  const stopwatch = new Stopwatch(stopwatchName, 0);
+// START FUNCTIONS ------------------------------------------------------//
 
-  //push stopwatch object to array
+/**
+ * Creates stopwatch component.
+ * Initalizes object and creates html elements.
+ */
+function createStopwatch(stopwatchName) {
+  const stopwatch = new Stopwatch(stopwatchName, 0);
   stopwatchArray.push(stopwatch);
 
+  //Create random ID for each component --- This could be better with a library such as UUID
   const randomID = Math.floor(Math.random() * 100000);
-  console.log(randomID);
-
-  //create id for object -- improve this id later -- make unique
   const id = `id-${randomID}`;
 
-  //add id property to object
   stopwatch.id = id;
+  stopwatch.name = stopwatchName;
 
-  //Stopwatch component created
-  //create DOM elements and add attributes --- create function for this
+  buildStopwatchHTML(id, stopwatchName);
+}
+
+/**
+ * Builds stopwatch HTML elements. Adds attributes, classes, and content.
+ */
+function buildStopwatchHTML(id, stopwatchName) {
   const wrapper = document.createElement("div");
   wrapper.classList.add("stopwatch", `${id}`);
   wrapper.dataset.id = id;
@@ -272,7 +277,6 @@ function createStopwatch(stopwatchName) {
   closeEditWrapperBtn.appendChild(closeEditWrapperIcon);
   editWrapperActive.appendChild(deleteBtn);
   editWrapperActive.appendChild(closeEditWrapperBtn);
-
   buttonWrapper.appendChild(startBtn);
   buttonWrapper.appendChild(stopBtn);
   buttonWrapper.appendChild(resumeBtn);
@@ -285,20 +289,14 @@ function createStopwatch(stopwatchName) {
   stopwatchSection.appendChild(wrapper);
 }
 
-function startCounting(event) {
-  const targetDOMObject = event.target.parentNode.parentNode;
+/**
+ * Accesses target stopwatch object.
+ */
+function getTargetStopwatch(targetDOMObject) {
   const targetDOMObjectID = targetDOMObject.dataset.id;
-  const startBtn = targetDOMObject.querySelector(".js-start-btn");
-  const pauseBtn = targetDOMObject.querySelector(".js-pause-btn");
-  // const resumeBtn = targetDOMObject.querySelector(".js-resume-btn");
-  const resetBtn = targetDOMObject.querySelector(".js-reset-btn");
-  startBtn.classList.add("display-none");
-  pauseBtn.classList.remove("display-none");
-  // resumeBtn.classList.remove("display-none");
-  resetBtn.classList.remove("display-none");
-  //accessing specific object with ID and manipulating it...
   let selectedStopwatch;
 
+  //accessing specific object with ID and saving in variable
   for (let i = 0; i < stopwatchArray.length; i++) {
     if (stopwatchArray[i]._id === targetDOMObjectID) {
       selectedStopwatch = stopwatchArray[i];
@@ -306,18 +304,65 @@ function startCounting(event) {
     }
   }
 
-  selectedStopwatch.start();
+  return selectedStopwatch;
+}
 
+function displayElapsedTime(targetDOMObject, targetStopwatch) {
   const hourPlace = targetDOMObject.querySelector(".js-hour-place");
   const minutePlace = targetDOMObject.querySelector(".js-minute-place");
   const secondPlace = targetDOMObject.querySelector(".js-second-place");
 
   //save interval id, so it can be cleared later
   targetDOMObject.dataset.intervalID = setInterval(() => {
-    hourPlace.textContent = selectedStopwatch._hour;
-    minutePlace.textContent = selectedStopwatch._minute;
-    secondPlace.textContent = selectedStopwatch._second;
+    hourPlace.textContent = targetStopwatch._hour;
+    minutePlace.textContent = targetStopwatch._minute;
+    secondPlace.textContent = targetStopwatch._second;
   }, 1000);
+}
+
+/**
+ * Calls start method on Stopwatch object.
+ * Updates button display.
+ */
+function startCounting(event) {
+  const targetDOMObject = event.target.parentNode.parentNode;
+  const selectedStopwatch = getTargetStopwatch(targetDOMObject);
+
+  // Display appropraite buttons --- could be refactored into a function
+  const startBtn = targetDOMObject.querySelector(".js-start-btn");
+  const pauseBtn = targetDOMObject.querySelector(".js-pause-btn");
+  const resetBtn = targetDOMObject.querySelector(".js-reset-btn");
+  startBtn.classList.add("display-none");
+  pauseBtn.classList.remove("display-none");
+  resetBtn.classList.remove("display-none");
+
+  selectedStopwatch.start();
+
+  displayElapsedTime(targetDOMObject, selectedStopwatch);
+
+  // function displayElapsedTime(targetDOMObject) {
+  //   const hourPlace = targetDOMObject.querySelector(".js-hour-place");
+  //   const minutePlace = targetDOMObject.querySelector(".js-minute-place");
+  //   const secondPlace = targetDOMObject.querySelector(".js-second-place");
+
+  //   //save interval id, so it can be cleared later
+  //   targetDOMObject.dataset.intervalID = setInterval(() => {
+  //     hourPlace.textContent = selectedStopwatch._hour;
+  //     minutePlace.textContent = selectedStopwatch._minute;
+  //     secondPlace.textContent = selectedStopwatch._second;
+  //   }, 1000);
+  // }
+
+  // const hourPlace = targetDOMObject.querySelector(".js-hour-place");
+  // const minutePlace = targetDOMObject.querySelector(".js-minute-place");
+  // const secondPlace = targetDOMObject.querySelector(".js-second-place");
+
+  // //save interval id, so it can be cleared later
+  // targetDOMObject.dataset.intervalID = setInterval(() => {
+  //   hourPlace.textContent = selectedStopwatch._hour;
+  //   minutePlace.textContent = selectedStopwatch._minute;
+  //   secondPlace.textContent = selectedStopwatch._second;
+  // }, 1000);
 }
 
 function pauseCounting(event) {
