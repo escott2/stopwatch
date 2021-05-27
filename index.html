@@ -16,13 +16,16 @@
       <h1>St<span class="color--accent">o</span>pwatch</h1>
       <div class="form-wrapper">
         <form>
-          <label for="stopwatch-name-input" class="name-label">Name</label>
+          <label for="name-input" class="name-input__label">Name</label>
           <input
-            id="stopwatch-name-input"
+            id="name-input"
             type="text"
-            class="js-stopwatch-name stopwatch-name"
+            class="js-stopwatch-name name-input"
           />
-          <button class="add-stopwatch-btn js-add-stopwatch-btn">
+          <button
+            class="generate-stopwatch-btn js-generate-stopwatch-btn"
+            aria-label="Add Stopwatch"
+          >
             <i class="icon fas fa-plus"></i>
           </button>
         </form>

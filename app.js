@@ -1,5 +1,5 @@
 // START VARIABLE DECLARATION ----------------------------------------//
-const addStopwatchBtn = document.querySelector(".js-add-stopwatch-btn");
+const addStopwatchBtn = document.querySelector(".js-generate-stopwatch-btn");
 const stopwatchSection = document.querySelector(".js-stopwatch-section");
 const stopwatchArray = [];
 const stopwatchName = document.querySelector(".js-stopwatch-name");
@@ -123,7 +123,7 @@ class Stopwatch {
 
 // END STOPWATCH CLASS --------------------------------------------\\
 
-// Start Mutation Observer --------------------------------------------//
+// START MUTATION OBSERVER --------------------------------------------//
 /**
  * Observes changes in DOM, queries children, and adds event listeners.
  */
@@ -169,7 +169,7 @@ const observerCallback = (mutationList) => {
 
 const observer = new MutationObserver(observerCallback);
 observer.observe(stopwatchSection, config);
-// End Mutation Observer --------------------------------------------//
+// END MUTATION OBSERVER --------------------------------------------//
 
 // START FUNCTIONS ------------------------------------------------------//
 
@@ -252,19 +252,22 @@ function buildStopwatchHTML(id, stopwatchName) {
   stopwatchTitle.classList.add("stopwatch-title");
   const editBtn = document.createElement("button");
   editBtn.classList.add("edit-btn", "js-edit-btn");
+  editBtn.ariaLabel = "Edit Stopwatch";
   const editBtnIcon = document.createElement("i");
   editBtnIcon.classList.add("fas", "fa-pen");
   editBtn.appendChild(editBtnIcon);
 
   const editWrapperActive = document.createElement("div");
   editWrapperActive.classList.add(
-    "edit-wrapper--active",
+    "editor--open",
     "js-edit-wrapper--active",
     "display-none"
   );
   const deleteBtn = document.createElement("button");
   deleteBtn.classList.add("delete-btn", "js-delete-btn");
   const deleteBtnIcon = document.createElement("i");
+  deleteBtn.ariaLabel = "Delete Stopwatch";
+
   deleteBtnIcon.classList.add("fas", "fa-trash");
   deleteBtn.appendChild(deleteBtnIcon);
   const closeEditWrapperBtn = document.createElement("button");
@@ -272,6 +275,7 @@ function buildStopwatchHTML(id, stopwatchName) {
     "close-edit-wrapper-btn",
     "js-close-edit-wrapper-btn"
   );
+  closeEditWrapperBtn.ariaLabel = "Close Editor";
   const closeEditWrapperIcon = document.createElement("i");
   closeEditWrapperIcon.classList.add("fas", "fa-times-circle");
   closeEditWrapperBtn.appendChild(closeEditWrapperIcon);
@@ -339,105 +343,52 @@ function startCounting(event) {
   selectedStopwatch.start();
 
   displayElapsedTime(targetDOMObject, selectedStopwatch);
-
-  // function displayElapsedTime(targetDOMObject) {
-  //   const hourPlace = targetDOMObject.querySelector(".js-hour-place");
-  //   const minutePlace = targetDOMObject.querySelector(".js-minute-place");
-  //   const secondPlace = targetDOMObject.querySelector(".js-second-place");
-
-  //   //save interval id, so it can be cleared later
-  //   targetDOMObject.dataset.intervalID = setInterval(() => {
-  //     hourPlace.textContent = selectedStopwatch._hour;
-  //     minutePlace.textContent = selectedStopwatch._minute;
-  //     secondPlace.textContent = selectedStopwatch._second;
-  //   }, 1000);
-  // }
-
-  // const hourPlace = targetDOMObject.querySelector(".js-hour-place");
-  // const minutePlace = targetDOMObject.querySelector(".js-minute-place");
-  // const secondPlace = targetDOMObject.querySelector(".js-second-place");
-
-  // //save interval id, so it can be cleared later
-  // targetDOMObject.dataset.intervalID = setInterval(() => {
-  //   hourPlace.textContent = selectedStopwatch._hour;
-  //   minutePlace.textContent = selectedStopwatch._minute;
-  //   secondPlace.textContent = selectedStopwatch._second;
-  // }, 1000);
 }
 
+/**
+ * Calls pause method on Stopwatch object.
+ * Updates button display.
+ */
 function pauseCounting(event) {
-  //REPEATED CODE IN START AND PAUSE --- TURN INTO SEPERATE FUNCTION
   const targetDOMObject = event.target.parentNode.parentNode;
-  const targetDOMObjectID = targetDOMObject.dataset.id;
-  // const startBtn = targetDOMObject.querySelector(".js-start-btn");
+  const selectedStopwatch = getTargetStopwatch(targetDOMObject);
+
   const pauseBtn = targetDOMObject.querySelector(".js-pause-btn");
   const resumeBtn = targetDOMObject.querySelector(".js-resume-btn");
-  // const resetBtn = targetDOMObject.querySelector(".js-reset-btn");
-  // startBtn.classList.add("display-none");
   pauseBtn.classList.add("display-none");
   resumeBtn.classList.remove("display-none");
-  // resumeBtn.classList.remove("display-none");
-  // resetBtn.classList.remove("display-none");
-
-  //accessing specific object with ID and manipulating it...
-  let selectedStopwatch;
-
-  for (let i = 0; i < stopwatchArray.length; i++) {
-    if (stopwatchArray[i]._id === targetDOMObjectID) {
-      selectedStopwatch = stopwatchArray[i];
-      break;
-    }
-  }
-  //END REPEATED CODE
 
   selectedStopwatch.pause();
   clearInterval(targetDOMObject.dataset.intervalID);
 }
 
+/**
+ * Calls resume method on Stopwatch object.
+ * Updates button display.
+ */
 function resumeCounting(event) {
-  //REPEATED CODE IN START AND PAUSE --- TURN INTO SEPERATE FUNCTION
   const targetDOMObject = event.target.parentNode.parentNode;
-  const targetDOMObjectID = targetDOMObject.dataset.id;
-  // const startBtn = targetDOMObject.querySelector(".js-start-btn");
+  const selectedStopwatch = getTargetStopwatch(targetDOMObject);
+
   const pauseBtn = targetDOMObject.querySelector(".js-pause-btn");
   const resumeBtn = targetDOMObject.querySelector(".js-resume-btn");
-  // const resetBtn = targetDOMObject.querySelector(".js-reset-btn");
-  // startBtn.classList.add("display-none");
   pauseBtn.classList.remove("display-none");
   resumeBtn.classList.add("display-none");
-  // resumeBtn.classList.remove("display-none");
-  // resetBtn.classList.remove("display-none");
-
-  //accessing specific object with ID and manipulating it...
-  let selectedStopwatch;
-
-  for (let i = 0; i < stopwatchArray.length; i++) {
-    if (stopwatchArray[i]._id === targetDOMObjectID) {
-      selectedStopwatch = stopwatchArray[i];
-      break;
-    }
-  }
-  //END REPEATED CODE
 
   selectedStopwatch.resume();
-  //REPEATED IN startCounting();
 
-  const hourPlace = targetDOMObject.querySelector(".js-hour-place");
-  const minutePlace = targetDOMObject.querySelector(".js-minute-place");
-  const secondPlace = targetDOMObject.querySelector(".js-second-place");
-
-  //save interval id, so it can be cleared later
-  targetDOMObject.dataset.intervalID = setInterval(() => {
-    hourPlace.textContent = selectedStopwatch._hour;
-    minutePlace.textContent = selectedStopwatch._minute;
-    secondPlace.textContent = selectedStopwatch._second;
-  }, 1000);
+  displayElapsedTime(targetDOMObject, selectedStopwatch);
 }
 
+/**
+ * Calls reset method on Stopwatch object.
+ * Updates button display.
+ * Clears time display.
+ */
 function resetClock(event) {
-  //REPEATED CODE IN START AND PAUSE --- TURN INTO SEPERATE FUNCTION
   const targetDOMObject = event.target.parentNode.parentNode;
-  const targetDOMObjectID = targetDOMObject.dataset.id;
+  const selectedStopwatch = getTargetStopwatch(targetDOMObject);
+
   const startBtn = targetDOMObject.querySelector(".js-start-btn");
   const pauseBtn = targetDOMObject.querySelector(".js-pause-btn");
   const resumeBtn = targetDOMObject.querySelector(".js-resume-btn");
@@ -446,17 +397,6 @@ function resetClock(event) {
   pauseBtn.classList.add("display-none");
   resumeBtn.classList.add("display-none");
   resetBtn.classList.add("display-none");
-
-  //accessing specific object with ID and manipulating it...
-  let selectedStopwatch;
-
-  for (let i = 0; i < stopwatchArray.length; i++) {
-    if (stopwatchArray[i]._id === targetDOMObjectID) {
-      selectedStopwatch = stopwatchArray[i];
-      break;
-    }
-  }
-  //END REPEATED CODE
 
   selectedStopwatch.reset();
 
@@ -472,6 +412,9 @@ function resetClock(event) {
   clearInterval(targetDOMObject.dataset.intervalID);
 }
 
+/**
+ * Opens editor wrapper on stopwatch component.
+ */
 function editStopwatch(event) {
   const targetDOMObject = event.target.parentNode.parentNode;
 
@@ -482,10 +425,11 @@ function editStopwatch(event) {
   editWrapperActive.classList.add("display-flex");
 }
 
+/**
+ * Closes editor wrapper on stopwatch component.
+ */
 function closeEditWrapper(event) {
   const targetDOMObject = event.target.parentNode.parentNode.parentNode;
-  console.log(targetDOMObject);
-  console.log(event.target);
   const editWrapperActive = targetDOMObject.querySelector(
     ".js-edit-wrapper--active"
   );
@@ -493,11 +437,12 @@ function closeEditWrapper(event) {
   editWrapperActive.classList.remove("display-flex");
 }
 
+/**
+ * Deletes stopwatch from Array and removes component from DOM
+ */
 function deleteStopwatch(event) {
   const targetDOMObject = event.target.parentNode.parentNode.parentNode;
   const targetDOMObjectID = targetDOMObject.dataset.id;
-
-  console.log(stopwatchArray);
 
   for (let i = 0; i < stopwatchArray.length; i++) {
     if (stopwatchArray[i]._id === targetDOMObjectID) {
@@ -507,13 +452,12 @@ function deleteStopwatch(event) {
   }
 
   targetDOMObject.remove();
-
-  console.log(stopwatchArray);
 }
 
 // END FUNCTIONS ------------------------------------------------------\\
 
 // START EVENT LISTENERS --------------------------------------------------//
+//--- Note: Event listeners for generated content in mutation observer ---/
 
 addStopwatchBtn.addEventListener("click", (event) => {
   event.preventDefault();

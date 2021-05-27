@@ -1,3 +1,16 @@
+/* ==============================
+TABLE OF CONTENTS 
+1. Global Styles
+2. Typography
+3. Layout
+4. Buttons and Icons
+5. Media Queries
+================================= */
+
+/* ================================= 
+  || 1. Global Styles
+==================================== */
+
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
 
 * {
@@ -18,10 +31,13 @@ body {
   display: flex;
 }
 
-header {
-  width: 90%;
-  margin: 0 auto;
+.color--accent {
+  color: #add4d9;
 }
+
+/* ================================= 
+  || 2. Typography
+==================================== */
 
 h1 {
   font-size: 2.5rem;
@@ -29,15 +45,19 @@ h1 {
   text-align: center;
 }
 
-.color--accent {
-  color: #add4d9;
+/* ================================= 
+  || 3. Layout
+==================================== */
+
+header {
+  width: 90%;
+  margin: 0 auto;
 }
 
 .form-wrapper {
   background-color: #d94e4e;
   border-top: 0.5rem solid #d91a1a;
   border-bottom: 0.5rem solid #d91a1a;
-  /* border-radius: 10px; */
 }
 
 form {
@@ -48,7 +68,7 @@ form {
   justify-content: center;
 }
 
-.name-label {
+.name-input__label {
   display: block;
   text-align: center;
   margin: 1rem;
@@ -56,50 +76,19 @@ form {
   font-family: "Poppins", sans-serif;
 }
 
-.stopwatch-name {
+.name-input {
   padding: 0.5rem 1rem;
   width: 90%;
   border-radius: 10px;
   border: solid 0.25rem white;
 }
 
-.add-stopwatch-btn {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: none;
-  background-color: #add4d9;
-  margin: 1rem auto;
-}
-
-.add-stopwatch-btn:hover,
-.start-btn:hover {
-  background-color: #54828c;
-  cursor: pointer;
-}
-
-.add-stopwatch-btn:active,
-.start-btn:active {
-  background-color: #324e54;
-}
-
-.edit-btn {
-  position: absolute;
-  top: 5px;
-  left: 190px;
-  border-radius: 50%;
-  border: none;
-  background-color: #add4d9;
-  width: 35px;
-  height: 35px;
-}
-
-.edit-wrapper--active {
+.editor--open {
   position: absolute;
   top: 5px;
   left: 100px;
   background-color: white;
-  border: 0.2rem solid red;
+  border: 0.2rem solid #d91a1a;
   width: 60%;
   height: 25%;
   border-radius: 10px;
@@ -108,54 +97,9 @@ form {
   padding: 1rem;
 }
 
-.delete-btn,
-.close-edit-wrapper-btn {
-  border-radius: 50%;
-  border: none;
-  width: 35px;
-  height: 35px;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.edit-btn i,
-.delete-btn i,
-.close-edit-wrapper-btn i {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-.delete-btn {
-  background-color: #d91a1a;
-}
-
-.close-edit-wrapper-btn {
-  background-color: #bf871f;
-}
-
-.icon {
-  color: black;
-  font-size: 35px;
-}
-
 .stopwatch-section {
   display: flex;
   flex-direction: column;
-  /* align-items: center;
-  justify-content: center; */
-}
-
-.stopwatch-title {
-  background-color: white;
-  border-top: 0.5rem solid #add4d9;
-  border-bottom: 0.5rem solid #add4d9;
-  position: absolute;
-  bottom: -40px;
-  width: 100%;
-  text-align: center;
 }
 
 .stopwatch {
@@ -170,6 +114,16 @@ form {
   justify-content: center;
   border-radius: 50%;
   border: solid 1rem #add4d9;
+}
+
+.stopwatch-title {
+  background-color: white;
+  border-top: 0.5rem solid #add4d9;
+  border-bottom: 0.5rem solid #add4d9;
+  position: absolute;
+  bottom: -40px;
+  width: 100%;
+  text-align: center;
 }
 
 .elapsed-time-wrapper {
@@ -197,6 +151,80 @@ form {
   justify-content: center;
 }
 
+/* ================================= 
+  || 4. Buttons & icons
+==================================== */
+
+.generate-stopwatch-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background-color: #add4d9;
+  margin: 1rem auto;
+}
+
+.generate-stopwatch-btn i {
+  color: black;
+  font-size: 35px;
+}
+
+.add-stopwatch-btn:hover,
+.start-btn:hover,
+.edit-btn:hover {
+  background-color: #54828c;
+  cursor: pointer;
+}
+
+.add-stopwatch-btn:active,
+.start-btn:active,
+.edit-btn:active {
+  background-color: #324e54;
+}
+
+.edit-btn {
+  position: absolute;
+  top: 5px;
+  left: 190px;
+  border-radius: 50%;
+  border: none;
+  background-color: #add4d9;
+  width: 35px;
+  height: 35px;
+}
+
+.delete-btn {
+  background-color: #d91a1a;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #ae1515;
+}
+
+.delete-btn:active {
+  background-color: #821010;
+}
+
+.delete-btn,
+.close-edit-wrapper-btn {
+  border-radius: 50%;
+  border: none;
+  width: 35px;
+  height: 35px;
+  font-size: 20px;
+}
+
+.edit-btn i,
+.delete-btn i,
+.close-edit-wrapper-btn i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
 .stopwatch-btn {
   margin: 0.25rem;
   padding: 0.2rem;
@@ -211,18 +239,21 @@ form {
 }
 
 .pause-btn,
-.resume-btn {
+.resume-btn,
+.close-edit-wrapper-btn {
   background-color: #bf871f;
 }
 
 .pause-btn:hover,
-.resume-btn:hover {
+.resume-btn:hover,
+.close-edit-wrapper-btn:hover {
   cursor: pointer;
   background-color: #996c19;
 }
 
 .pause-btn:active,
-.resume-btn:active {
+.resume-btn:active,
+.close-edit-wrapper-btn:active {
   background-color: #735113;
 }
 
@@ -239,6 +270,10 @@ form {
   background-color: #821010;
 }
 
+/* ================================= 
+  || 5. Media Queries
+==================================== */
+
 @media (min-width: 576px) {
   form {
     max-width: 700px;
@@ -247,12 +282,11 @@ form {
     flex-wrap: wrap;
   }
 
-  .name-label {
-    /* width: 30%; */
+  .name-input__label {
     display: inline-block;
   }
 
-  .stopwatch-name {
+  .name-input {
     width: 50%;
   }
 
