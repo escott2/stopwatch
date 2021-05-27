@@ -227,6 +227,11 @@ function createStopwatch(stopwatchName) {
   const stopwatchTitle = document.createElement("h2");
   stopwatchTitle.textContent = stopwatchName;
   stopwatchTitle.classList.add("stopwatch-title");
+  const editBtn = document.createElement("button");
+  editBtn.classList.add("edit-btn");
+  const editBtnIcon = document.createElement("i");
+  editBtnIcon.classList.add("fas", "fa-pen");
+  editBtn.appendChild(editBtnIcon);
 
   buttonWrapper.appendChild(startBtn);
   buttonWrapper.appendChild(stopBtn);
@@ -235,6 +240,7 @@ function createStopwatch(stopwatchName) {
   wrapper.appendChild(timeWrapper);
   wrapper.appendChild(buttonWrapper);
   wrapper.appendChild(stopwatchTitle);
+  wrapper.appendChild(editBtn);
   stopwatchSection.appendChild(wrapper);
 }
 

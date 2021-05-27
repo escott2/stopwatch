@@ -74,6 +74,22 @@ form {
   cursor: pointer;
 }
 
+.add-stopwatch-btn:active,
+.start-btn:active {
+  background-color: #324e54;
+}
+
+.edit-btn {
+  position: absolute;
+  top: 5px;
+  left: 190px;
+  border-radius: 50%;
+  border: none;
+  background-color: #add4d9;
+  width: 35px;
+  height: 35px;
+}
+
 .icon {
   color: black;
   font-size: 35px;
@@ -153,8 +169,28 @@ form {
   background-color: #bf871f;
 }
 
+.pause-btn:hover,
+.resume-btn:hover {
+  cursor: pointer;
+  background-color: #996c19;
+}
+
+.pause-btn:active,
+.resume-btn:active {
+  background-color: #735113;
+}
+
 .reset-btn {
   background-color: #d94e4e;
+}
+
+.reset-btn:hover {
+  cursor: pointer;
+  background-color: #d91a1a;
+}
+
+.reset-btn:active {
+  background-color: #821010;
 }
 
 @media (min-width: 576px) {
