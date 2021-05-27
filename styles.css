@@ -14,6 +14,10 @@ body {
   display: none;
 }
 
+.display-flex {
+  display: flex;
+}
+
 header {
   width: 90%;
   margin: 0 auto;
@@ -88,6 +92,47 @@ form {
   background-color: #add4d9;
   width: 35px;
   height: 35px;
+}
+
+.edit-wrapper--active {
+  position: absolute;
+  top: 5px;
+  left: 100px;
+  background-color: white;
+  border: 0.2rem solid red;
+  width: 60%;
+  height: 25%;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.delete-btn,
+.close-edit-wrapper-btn {
+  border-radius: 50%;
+  border: none;
+  width: 35px;
+  height: 35px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.delete-btn i,
+.close-edit-wrapper-btn i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.delete-btn {
+  background-color: #d91a1a;
+}
+
+.close-edit-wrapper-btn {
+  background-color: #bf871f;
 }
 
 .icon {

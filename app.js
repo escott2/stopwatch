@@ -150,6 +150,20 @@ const observerCallback = (mutationList) => {
       resetButtons.forEach((button) => {
         button.addEventListener("click", resetClock);
       });
+      const editButtons = document.querySelectorAll(".js-edit-btn");
+      editButtons.forEach((button) => {
+        button.addEventListener("click", editStopwatch);
+      });
+      const closeEditorButtons = document.querySelectorAll(
+        ".js-close-edit-wrapper-btn"
+      );
+      closeEditorButtons.forEach((button) => {
+        button.addEventListener("click", closeEditWrapper);
+      });
+      const deleteButtons = document.querySelectorAll(".js-delete-btn");
+      deleteButtons.forEach((button) => {
+        button.addEventListener("click", deleteStopwatch);
+      });
     }
   }
 };
@@ -171,6 +185,7 @@ function createStopwatch(stopwatchName) {
   //add id property to object
   stopwatch.id = id;
 
+  //Stopwatch component created
   //create DOM elements and add attributes --- create function for this
   const wrapper = document.createElement("div");
   wrapper.classList.add("stopwatch", `${id}`);
@@ -228,10 +243,32 @@ function createStopwatch(stopwatchName) {
   stopwatchTitle.textContent = stopwatchName;
   stopwatchTitle.classList.add("stopwatch-title");
   const editBtn = document.createElement("button");
-  editBtn.classList.add("edit-btn");
+  editBtn.classList.add("edit-btn", "js-edit-btn");
   const editBtnIcon = document.createElement("i");
   editBtnIcon.classList.add("fas", "fa-pen");
   editBtn.appendChild(editBtnIcon);
+
+  const editWrapperActive = document.createElement("div");
+  editWrapperActive.classList.add(
+    "edit-wrapper--active",
+    "js-edit-wrapper--active",
+    "display-none"
+  );
+  const deleteBtn = document.createElement("button");
+  deleteBtn.classList.add("delete-btn", "js-delete-btn");
+  const deleteBtnIcon = document.createElement("i");
+  deleteBtnIcon.classList.add("fas", "fa-trash");
+  deleteBtn.appendChild(deleteBtnIcon);
+  const closeEditWrapperBtn = document.createElement("button");
+  closeEditWrapperBtn.classList.add(
+    "close-edit-wrapper-btn",
+    "js-close-edit-wrapper-btn"
+  );
+  const closeEditWrapperIcon = document.createElement("i");
+  closeEditWrapperIcon.classList.add("fas", "fa-times-circle");
+  closeEditWrapperBtn.appendChild(closeEditWrapperIcon);
+  editWrapperActive.appendChild(deleteBtn);
+  editWrapperActive.appendChild(closeEditWrapperBtn);
 
   buttonWrapper.appendChild(startBtn);
   buttonWrapper.appendChild(stopBtn);
@@ -241,6 +278,7 @@ function createStopwatch(stopwatchName) {
   wrapper.appendChild(buttonWrapper);
   wrapper.appendChild(stopwatchTitle);
   wrapper.appendChild(editBtn);
+  wrapper.appendChild(editWrapperActive);
   stopwatchSection.appendChild(wrapper);
 }
 
@@ -384,6 +422,45 @@ function resetClock(event) {
   secondPlace.textContent = "00";
 
   clearInterval(targetDOMObject.dataset.intervalID);
+}
+
+function editStopwatch(event) {
+  const targetDOMObject = event.target.parentNode.parentNode;
+
+  const editWrapperActive = targetDOMObject.querySelector(
+    ".js-edit-wrapper--active"
+  );
+  editWrapperActive.classList.remove("display-none");
+  editWrapperActive.classList.add("display-flex");
+}
+
+function closeEditWrapper(event) {
+  const targetDOMObject = event.target.parentNode.parentNode.parentNode;
+  console.log(targetDOMObject);
+  console.log(event.target);
+  const editWrapperActive = targetDOMObject.querySelector(
+    ".js-edit-wrapper--active"
+  );
+  editWrapperActive.classList.add("display-none");
+  editWrapperActive.classList.remove("display-flex");
+}
+
+function deleteStopwatch(event) {
+  const targetDOMObject = event.target.parentNode.parentNode.parentNode;
+  const targetDOMObjectID = targetDOMObject.dataset.id;
+
+  console.log(stopwatchArray);
+
+  for (let i = 0; i < stopwatchArray.length; i++) {
+    if (stopwatchArray[i]._id === targetDOMObjectID) {
+      stopwatchArray.splice(i, 1);
+      break;
+    }
+  }
+
+  targetDOMObject.remove();
+
+  console.log(stopwatchArray);
 }
 
 // END FUNCTIONS ------------------------------------------------------\\
