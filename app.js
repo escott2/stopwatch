@@ -195,7 +195,6 @@ function createStopwatch(stopwatchName) {
   timeWrapper.appendChild(minuteSpan);
   timeWrapper.appendChild(secondColon);
   timeWrapper.appendChild(secondSpan);
-
   const buttonWrapper = document.createElement("div");
   buttonWrapper.classList.add("stopwatch-btn-wrapper");
   const startBtn = document.createElement("button");
@@ -225,6 +224,9 @@ function createStopwatch(stopwatchName) {
     "display-none",
     "reset-btn"
   );
+  const stopwatchTitle = document.createElement("h2");
+  stopwatchTitle.textContent = stopwatchName;
+  stopwatchTitle.classList.add("stopwatch-title");
 
   buttonWrapper.appendChild(startBtn);
   buttonWrapper.appendChild(stopBtn);
@@ -232,6 +234,7 @@ function createStopwatch(stopwatchName) {
   buttonWrapper.appendChild(resetBtn);
   wrapper.appendChild(timeWrapper);
   wrapper.appendChild(buttonWrapper);
+  wrapper.appendChild(stopwatchTitle);
   stopwatchSection.appendChild(wrapper);
 }
 
