@@ -118,6 +118,7 @@ form {
   cursor: pointer;
 }
 
+.edit-btn i,
 .delete-btn i,
 .close-edit-wrapper-btn i {
   display: flex;

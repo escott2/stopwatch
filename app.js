@@ -179,8 +179,11 @@ function createStopwatch(stopwatchName) {
   //push stopwatch object to array
   stopwatchArray.push(stopwatch);
 
+  const randomID = Math.floor(Math.random() * 100000);
+  console.log(randomID);
+
   //create id for object -- improve this id later -- make unique
-  const id = `id-${stopwatchArray.length}`;
+  const id = `id-${randomID}`;
 
   //add id property to object
   stopwatch.id = id;
