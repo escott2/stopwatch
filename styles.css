@@ -10,15 +10,73 @@
   display: none;
 }
 
+header {
+  width: 90%;
+  margin: 0 auto;
+  background-color: #d94e4e;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; */
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.name-label {
+  display: block;
+  text-align: center;
+  margin: 1rem;
+  font-size: 2rem;
+  font-family: "Poppins", sans-serif;
+}
+
+.stopwatch-name {
+  padding: 0.5rem 1rem;
+  width: 90%;
+}
+
+.add-stopwatch-btn {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  border: none;
+  background-color: #add4d9;
+  margin: 1rem auto;
+}
+
+.add-stopwatch-btn:hover,
+.start-btn:hover {
+  background-color: #54828c;
+  cursor: pointer;
+}
+
+.icon {
+  color: black;
+  font-size: 45px;
+}
+
+.stopwatch-section {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center;
+  justify-content: center; */
+}
+
 .stopwatch {
   background-color: black;
   width: 250px;
   height: 250px;
   margin: 1rem auto;
   display: flex;
-  /* flex-wrap: wrap; */
   flex-direction: column;
   align-items: center;
+  justify-content: space-evenly;
 }
 
 .elapsed-time-wrapper {
@@ -38,8 +96,59 @@
   width: 50px;
 }
 
+.stopwatch-btn-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .stopwatch-btn {
   margin: 0.25rem;
   padding: 0.25rem;
   width: 50%;
+  border: solid 0.2rem white;
+  font-size: 1.25rem;
+}
+
+.start-btn {
+  background-color: #add4d9;
+}
+
+.pause-btn,
+.resume-btn {
+  background-color: #bf871f;
+}
+
+.reset-btn {
+  background-color: #d94e4e;
+}
+
+@media (min-width: 576px) {
+  form {
+    max-width: 700px;
+    margin: 0 auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .name-label {
+    /* width: 30%; */
+    display: inline-block;
+  }
+
+  .stopwatch-name {
+    width: 50%;
+  }
+
+  .stopwatch {
+    margin: 1rem;
+  }
+
+  .stopwatch-section {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }

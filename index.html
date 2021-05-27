@@ -5,16 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stopwatch</title>
+    <script
+      src="https://kit.fontawesome.com/4b3b1ff6ef.js"
+      crossorigin="anonymous"
+    ></script>
     <link href="styles.css" rel="stylesheet" />
   </head>
   <body>
+    <header>
+      <form>
+        <label for="stopwatch-name-input" class="name-label">Name</label>
+        <input
+          id="stopwatch-name-input"
+          type="text"
+          class="js-stopwatch-name stopwatch-name"
+        />
+        <button class="add-stopwatch-btn js-add-stopwatch-btn">
+          <i class="icon fas fa-plus"></i>
+        </button>
+      </form>
+    </header>
     <main>
-      <section class="js-stopwatch-section">
-        <form>
-          <input type="text" class="js-stopwatch-name" />
-        </form>
-        <button class="add-stopwatch js-add-stopwatch">Add stopwatch</button>
-      </section>
+      <section class="js-stopwatch-section stopwatch-section"></section>
     </main>
     <script src="app.js"></script>
   </body>

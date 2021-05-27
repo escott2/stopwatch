@@ -1,5 +1,5 @@
 // START VARIABLE DECLARATION ----------------------------------------//
-const addStopwatchBtn = document.querySelector(".js-add-stopwatch");
+const addStopwatchBtn = document.querySelector(".js-add-stopwatch-btn");
 const stopwatchSection = document.querySelector(".js-stopwatch-section");
 const stopwatchArray = [];
 const stopwatchName = document.querySelector(".js-stopwatch-name");
@@ -196,29 +196,47 @@ function createStopwatch(stopwatchName) {
   timeWrapper.appendChild(secondColon);
   timeWrapper.appendChild(secondSpan);
 
+  const buttonWrapper = document.createElement("div");
+  buttonWrapper.classList.add("stopwatch-btn-wrapper");
   const startBtn = document.createElement("button");
   startBtn.textContent = "start";
-  startBtn.classList.add("js-start-btn", "stopwatch-btn");
+  startBtn.classList.add("js-start-btn", "stopwatch-btn", "start-btn");
   const stopBtn = document.createElement("button");
   stopBtn.textContent = "pause";
-  stopBtn.classList.add("js-pause-btn", "stopwatch-btn", "display-none");
+  stopBtn.classList.add(
+    "js-pause-btn",
+    "stopwatch-btn",
+    "display-none",
+    "pause-btn"
+  );
   const resumeBtn = document.createElement("button");
   resumeBtn.textContent = "resume";
-  resumeBtn.classList.add("js-resume-btn", "stopwatch-btn", "display-none");
+  resumeBtn.classList.add(
+    "js-resume-btn",
+    "stopwatch-btn",
+    "display-none",
+    "resume-btn"
+  );
   const resetBtn = document.createElement("button");
   resetBtn.textContent = "reset";
-  resetBtn.classList.add("js-reset-btn", "stopwatch-btn", "display-none");
+  resetBtn.classList.add(
+    "js-reset-btn",
+    "stopwatch-btn",
+    "display-none",
+    "reset-btn"
+  );
 
+  buttonWrapper.appendChild(startBtn);
+  buttonWrapper.appendChild(stopBtn);
+  buttonWrapper.appendChild(resumeBtn);
+  buttonWrapper.appendChild(resetBtn);
   wrapper.appendChild(timeWrapper);
-  wrapper.appendChild(startBtn);
-  wrapper.appendChild(stopBtn);
-  wrapper.appendChild(resumeBtn);
-  wrapper.appendChild(resetBtn);
+  wrapper.appendChild(buttonWrapper);
   stopwatchSection.appendChild(wrapper);
 }
 
 function startCounting(event) {
-  const targetDOMObject = event.target.parentNode;
+  const targetDOMObject = event.target.parentNode.parentNode;
   const targetDOMObjectID = targetDOMObject.dataset.id;
   const startBtn = targetDOMObject.querySelector(".js-start-btn");
   const pauseBtn = targetDOMObject.querySelector(".js-pause-btn");
@@ -254,7 +272,7 @@ function startCounting(event) {
 
 function pauseCounting(event) {
   //REPEATED CODE IN START AND PAUSE --- TURN INTO SEPERATE FUNCTION
-  const targetDOMObject = event.target.parentNode;
+  const targetDOMObject = event.target.parentNode.parentNode;
   const targetDOMObjectID = targetDOMObject.dataset.id;
   // const startBtn = targetDOMObject.querySelector(".js-start-btn");
   const pauseBtn = targetDOMObject.querySelector(".js-pause-btn");
@@ -283,7 +301,7 @@ function pauseCounting(event) {
 
 function resumeCounting(event) {
   //REPEATED CODE IN START AND PAUSE --- TURN INTO SEPERATE FUNCTION
-  const targetDOMObject = event.target.parentNode;
+  const targetDOMObject = event.target.parentNode.parentNode;
   const targetDOMObjectID = targetDOMObject.dataset.id;
   // const startBtn = targetDOMObject.querySelector(".js-start-btn");
   const pauseBtn = targetDOMObject.querySelector(".js-pause-btn");
@@ -323,7 +341,7 @@ function resumeCounting(event) {
 
 function resetClock(event) {
   //REPEATED CODE IN START AND PAUSE --- TURN INTO SEPERATE FUNCTION
-  const targetDOMObject = event.target.parentNode;
+  const targetDOMObject = event.target.parentNode.parentNode;
   const targetDOMObjectID = targetDOMObject.dataset.id;
   const startBtn = targetDOMObject.querySelector(".js-start-btn");
   const pauseBtn = targetDOMObject.querySelector(".js-pause-btn");
@@ -363,7 +381,8 @@ function resetClock(event) {
 
 // START EVENT LISTENERS --------------------------------------------------//
 
-addStopwatchBtn.addEventListener("click", () => {
+addStopwatchBtn.addEventListener("click", (event) => {
+  event.preventDefault();
   createStopwatch(stopwatchName.value);
   stopwatchName.value = "";
 });
